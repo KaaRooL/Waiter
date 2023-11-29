@@ -8,11 +8,8 @@ const firebaseAdminConfig = {
     })
 }
 
-const config = require("../../waiter-253ed-firebase-adminsdk-smbit-995048b976.json");
 
 export function customInitApp() {
-    console.log("customappinit");
-    console.log(firebaseAdminConfig);
     const app = getApps().length > 0 ? getApp() : initializeApp(firebaseAdminConfig);
     return app;
 }

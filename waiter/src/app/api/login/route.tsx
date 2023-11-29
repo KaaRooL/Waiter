@@ -2,13 +2,14 @@ import { auth } from "firebase-admin";
 import { customInitApp } from "@/lib/firebase-admin-config";
 import { cookies, headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 
 // Init the Firebase SDK every time the server is called
 const app = customInitApp();
 
 export async function GET(request: NextRequest) {
+  
   const session = cookies().get("session")?.value || "";
-
   //Validate if the cookie exist in the request
   if (!session) {
     return NextResponse.json({ isLogged: false }, { status: 401 });
@@ -16,21 +17,19 @@ export async function GET(request: NextRequest) {
   
   //Use Firebase Admin to validate the session cookie
   const decodedClaims = await auth().verifySessionCookie(session, true);
-
   if (!decodedClaims) {
     return NextResponse.json({ isLogged: false }, { status: 401 });
   }
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  return NextResponse.json({ isLogged: true }, { status: 200 });
 }
 
 
 export async function POST(request: NextRequest, response: NextResponse) {
   
   const authorization = headers().get("Authorization");
-  console.log("hello");
+  console.log("POST z api/login")
   if (authorization?.startsWith("Bearer ")) {
     const idToken = authorization.split("Bearer ")[1];
-    const users = await auth().listUsers();
     const decodedToken = await auth().verifyIdToken(idToken);
 
     if (decodedToken) {
@@ -54,3 +53,4 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
   return NextResponse.json({}, { status: 200 });
 }
+

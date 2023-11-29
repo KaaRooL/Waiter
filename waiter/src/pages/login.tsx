@@ -21,7 +21,7 @@ import { auth} from "../lib/firebase";
         console.log("Response from apilogin")
         console.log(response);
         if(response.status ===200){
-          router.push("/dashboards");
+          router.push("/dashboard");
         }
       }).catch((error)=>{
         console.log("Error");

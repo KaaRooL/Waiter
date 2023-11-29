@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth"
-import { sign } from 'crypto';
-import { auth, provider } from "../../lib/firebase";
+import { auth } from "../../lib/firebase";
 import { useRouter } from 'next/navigation';
 
  const LoginPage = () => {
@@ -24,7 +23,7 @@ import { useRouter } from 'next/navigation';
         },
       }).then(response =>{
         if(response.status ===200){
-          router.push("/dashboards");
+          router.push("/dashboard");
         }
       });
       return console.log(result);
